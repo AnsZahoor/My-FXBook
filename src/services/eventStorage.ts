@@ -1,12 +1,10 @@
-// Remove all Prisma imports
-import { fetchEvents } from '@/lib/api'
-
-export const getStoredEvents = async () => {
+export const fetchStoredEvents = async (): Promise<EconomicEvent[]> => {
   try {
-    const response = await fetch('/api/events')
-    return await response.json()
+    const response = await fetch('/api/events');
+    if (!response.ok) throw new Error('Network response was not ok');
+    return await response.json();
   } catch (error) {
-    console.error('Error fetching events:', error)
-    return []
+    console.error('Error fetching events:', error);
+    return [];
   }
-}
+};

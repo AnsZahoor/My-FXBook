@@ -42,3 +42,13 @@ export interface EventFilters {
   endDate: string;
   currencies: CurrencyType[];
 }
+export interface EconomicEvent {
+  id: string;
+  title: string;
+  currency: string;
+  date: string;
+  impact: string;
+  previous?: string;
+  forecast?: string;
+  actual?: string;
+}
