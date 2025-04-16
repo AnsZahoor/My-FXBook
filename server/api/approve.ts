@@ -1,16 +1,13 @@
-import { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '@/lib/prisma'
+import { Request, Response } from 'express'
+import prisma from '../lib/prisma'
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method !== 'PUT') {
-    return res.status(405).json({ message: 'Method not allowed' })
-  }
-
+export const approveUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.body
+
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required' })
+    }
 
     const updatedUser = await prisma.user.update({
       where: { id: userId },
