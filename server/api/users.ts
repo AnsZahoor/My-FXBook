@@ -1,43 +1,46 @@
-import { NextResponse } from 'next/server';
-import prisma from '../prisma';
+import { NextApiRequest, NextApiResponse } from 'next';
+import prisma from '@/lib/prisma';
 
-export async function GET() {
-  try {
-    const pendingUsers = await prisma.user.findMany({
-      where: { isApproved: false },
-      select: { id: true, name: true, email: true, createdAt: true }
-    });
-    
-    const totalUsers = await prisma.user.count();
-    
-    return NextResponse.json({
-      pendingUsers,
-      totalUsers
-    });
-    
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to fetch users" },
-      { status: 500 }
-    );
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method === 'GET') {
+    try {
+      const pendingUsers = await prisma.user.findMany({
+        where: { isApproved: false },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          createdAt: true
+        }
+      });
+      
+      const totalUsers = await prisma.user.count();
+      
+      return res.status(200).json({ pendingUsers, totalUsers });
+      
+    } catch (error) {
+      return res.status(500).json({ error: 'Failed to fetch users' });
+    }
   }
-}
 
-export async function POST(request: Request) {
-  const { userId } = await request.json();
-  
-  try {
-    await prisma.user.update({
-      where: { id: userId },
-      data: { isApproved: true }
-    });
-    
-    return NextResponse.json({ success: true });
-    
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Approval failed" },
-      { status: 500 }
-    );
+  if (req.method === 'POST') {
+    try {
+      const { userId } = req.body;
+      
+      await prisma.user.update({
+        where: { id: userId },
+        data: { isApproved: true }
+      });
+      
+      return res.status(200).json({ success: true });
+      
+    } catch (error) {
+      return res.status(500).json({ error: 'Approval failed' });
+    }
   }
+
+  return res.status(405).end(); // Method Not Allowed
 }
