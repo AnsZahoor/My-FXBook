@@ -1,23 +1,14 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import path from 'path';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
-  },
   server: {
-    port: 3000,
-    host: true,
-  },
-  build: {
-    outDir: 'dist',
-    emptyOutDir: true,
+    proxy: {
+      '/api': 'http://localhost:3000' // Proxy API requests
+    }
   },
   optimizeDeps: {
-    include: ['@radix-ui/react-toast', 'sonner', '@radix-ui/react-tooltip'],
-  },
-});
+    exclude: ['@prisma/client'] // Critical fix
+  }
+})
