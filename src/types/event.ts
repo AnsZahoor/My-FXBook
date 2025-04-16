@@ -46,9 +46,12 @@ export interface EconomicEvent {
   id: string;
   title: string;
   currency: string;
+  country: string;
   date: string;
-  impact: string;
+  time: string;
+  impact: 'low' | 'medium' | 'high';
   previous?: string;
   forecast?: string;
   actual?: string;
+  score?: number;
 }
