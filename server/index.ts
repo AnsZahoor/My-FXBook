@@ -1,5 +1,5 @@
-import express from 'express'
-import { getUsers } from './api/users'
+import express, { Request, Response } from 'express'
+import { getUsers } from './api/user'
 import { approveUser } from './api/approve'
 
 const app = express()
@@ -11,5 +11,5 @@ app.post('/api/approve', approveUser)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+  console.log(`Server running on http://localhost:${PORT}`)
 })
