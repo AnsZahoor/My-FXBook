@@ -16,7 +16,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('/api/admin/users')
+        const response = await fetch('/api/user')
         if (!response.ok) throw new Error('Failed to fetch users')
         const data = await response.json()
         setUsers(data)
@@ -31,8 +31,8 @@ const AdminDashboard = () => {
 
   const handleApprove = async (userId: string) => {
     try {
-      const response = await fetch('/api/admin/approve', {
-        method: 'PUT',
+      const response = await fetch('/api/approve', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -41,7 +41,6 @@ const AdminDashboard = () => {
 
       if (!response.ok) throw new Error('Approval failed')
 
-      // Update local state
       setUsers(prevUsers =>
         prevUsers.map(user =>
           user.id === userId ? { ...user, approved: true } : user
@@ -52,9 +51,7 @@ const AdminDashboard = () => {
     }
   }
 
-  if (loading) {
-    return <div className="p-4">Loading user data...</div>
-  }
+  if (loading) return <div className="p-4">Loading user data...</div>
 
   const pendingUsers = users.filter(user => !user.approved)
   const approvedUsers = users.filter(user => user.approved)
@@ -123,9 +120,6 @@ const AdminDashboard = () => {
             </div>
           )}
         </div>
-
-        {/* Recent Events Section */}
-        {/* Keep your existing events display code here */}
       </div>
       <Toaster />
     </div>
