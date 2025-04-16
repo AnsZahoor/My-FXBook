@@ -1,15 +1,10 @@
-import express, { Request, Response } from 'express'
-import { getUsers } from './api/user'
-import { approveUser } from './api/approve'
+import express from "express";
+import { login } from "./api/auth";
 
-const app = express()
-app.use(express.json())
+const app = express();
+app.use(express.json());
 
-// API Routes
-app.get('/api/user', getUsers)
-app.post('/api/approve', approveUser)
+// Auth route
+app.post("/api/auth/login", login);
 
-const PORT = process.env.PORT || 3001
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`)
-})
+// ... other routes ...

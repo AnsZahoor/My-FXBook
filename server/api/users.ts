@@ -4,12 +4,9 @@ import prisma from '../lib/prisma'
 export const getUsers = async (req: Request, res: Response) => {
   try {
     const users = await prisma.user.findMany({
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        approved: true,
-        createdAt: true
+      include: {
+        profile: true,
+        role: true
       },
       orderBy: {
         createdAt: 'desc'
