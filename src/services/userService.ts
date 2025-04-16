@@ -1,4 +1,4 @@
-import prisma from '@/lib/prisma';
+import prisma from '@/lib/prisma' // Import the Prisma client instance
 
 interface User {
   id: string;
