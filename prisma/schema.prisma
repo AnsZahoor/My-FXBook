@@ -42,7 +42,7 @@ model User {
   name      String
   email     String   @unique
   password  String
-  approved  Boolean  @default(false) // Add this line
+  approved Boolean @default(false)  # Ensure consistent naming
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

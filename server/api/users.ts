@@ -8,16 +8,14 @@ export const getUsers = async (req: Request, res: Response) => {
         id: true,
         name: true,
         email: true,
-        approved: true,
+        approved: true,  // Changed from isApproved
         createdAt: true
       },
-      orderBy: {
-        createdAt: 'desc'
-      }
+      orderBy: { createdAt: 'desc' }
     })
     res.status(200).json(users)
   } catch (error) {
     console.error('Error fetching users:', error)
-    res.status(500).json({ error: 'Failed to fetch users' })
+    res.status(500).json({ error: 'Internal server error' })
   }
 }

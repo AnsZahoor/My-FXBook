@@ -2,21 +2,20 @@ import { Request, Response } from 'express'
 import prisma from '../lib/prisma'
 
 export const approveUser = async (req: Request, res: Response) => {
+  const { userId } = req.body
+
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID is required' })
+  }
+
   try {
-    const { userId } = req.body
-
-    if (!userId) {
-      return res.status(400).json({ error: 'User ID is required' })
-    }
-
-    const updatedUser = await prisma.user.update({
+    const user = await prisma.user.update({
       where: { id: userId },
-      data: { approved: true }
+      data: { approved: true }  // Changed from isApproved
     })
-
-    res.status(200).json(updatedUser)
+    res.status(200).json(user)
   } catch (error) {
-    console.error('Error approving user:', error)
+    console.error('Approval error:', error)
     res.status(500).json({ error: 'Failed to approve user' })
   }
 }

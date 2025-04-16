@@ -55,3 +55,10 @@ export interface EconomicEvent {
   actual?: string;
   score?: number;
 }
+interface User {
+  id: string
+  name: string
+  email: string
+  approved: boolean  // Consistent naming
+  createdAt: Date
+}
