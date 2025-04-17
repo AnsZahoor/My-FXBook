@@ -11,7 +11,7 @@ import { toast } from "./components/ui/use-toast";
 import { fetchEvents } from "./services/api";
 import { format, subDays } from "date-fns";
 import { fetchStoredEvents } from "./services/eventStorage";
-import AdminDashboard from "./pages/AdminDashboard";
+import AdminDashboard from "./pages/__AdminDashboard";
 
 const queryClient = new QueryClient({
   defaultOptions: {
