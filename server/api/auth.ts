@@ -1,17 +1,18 @@
 import { Request, Response } from "express";
-import { authenticateUser } from "../../lib/auth";
+import prisma from "../lib/prisma";
 
-export const login = async (req: Request, res: Response) => {
+export const handleLogin = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-    const user = await authenticateUser(email, password);
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
 
-    if (!user) {
+    if (!user || user.password !== password) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    // In a real app, you would create a session or JWT token here
-    res.status(200).json({ user });
+    res.json({ user });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ error: "Login failed" });

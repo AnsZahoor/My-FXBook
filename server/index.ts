@@ -1,10 +1,4 @@
-import express from "express";
-import { login } from "./api/auth";
+import { approveUser } from './api/approve';
 
-const app = express();
-app.use(express.json());
-
-// Auth route
-app.post("/api/auth/login", login);
-
-// ... other routes ...
+// Add this with your other routes
+app.post('/api/user/approve', approveUser);

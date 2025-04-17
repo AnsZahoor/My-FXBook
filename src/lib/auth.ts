@@ -1,24 +1,24 @@
 import prisma from "@/lib/prisma";
-import bcrypt from "bcryptjs";
 
-export async function authenticateUser(email: string, password: string) {
+export const loginUser = async (email: string, password: string) => {
   const user = await prisma.user.findUnique({
     where: { email },
   });
 
-  if (!user) return null;
+  if (!user) throw new Error("User not found");
+  // Note: In production, use proper password hashing comparison
+  if (user.password !== password) throw new Error("Invalid credentials");
 
-  const isValid = await bcrypt.compare(password, user.password);
-  return isValid ? user : null;
-}
+  return user;
+};
 
-export async function createUser(name: string, email: string, password: string) {
-  const hashedPassword = await bcrypt.hash(password, 10);
+export const registerUser = async (email: string, password: string, name: string) => {
   return prisma.user.create({
     data: {
-      name,
       email,
-      password: hashedPassword,
-    },
+      password, // Remember to hash passwords in production!
+      name,
+      approved: false // Default to false for admin approval
+    }
   });
-}
+};
